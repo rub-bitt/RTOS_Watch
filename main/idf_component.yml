@@ -1,0 +1,2 @@
+dependencies:
+  esp_lcd_gc9a01: "^2.0.0"

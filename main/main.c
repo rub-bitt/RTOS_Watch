@@ -23,6 +23,8 @@
 #include "sys/param.h"
 #include "esp_timer.h"
 
+#include "cat_ui/ui.h"
+
 
 //#include "kit.c"
 
@@ -66,6 +68,7 @@ static void display_init(void){
         .spi_mode = 0,
         .trans_queue_depth = 10,
     };
+
     // Attach the LCD to the SPI bus
     ESP_ERROR_CHECK(esp_lcd_new_panel_io_spi((esp_lcd_spi_bus_handle_t)LCD_HOST, &io_config, &io_handle));
 
@@ -76,7 +79,6 @@ static void display_init(void){
     };
     // Create LCD panel handle for ST7789, with the SPI IO device handle
     ESP_ERROR_CHECK(esp_lcd_new_panel_gc9a01(io_handle, &panel_config, &panel_handle));
-
 
     esp_lcd_panel_reset(panel_handle);
     esp_lcd_panel_init(panel_handle);
@@ -184,9 +186,7 @@ void app_main(void)
     //initialze spi peripheral
     display_init(); 
 
-
-    
-    	  /*Initialize LVGL library*/
+    /*Initialize LVGL library*/
     lv_init();
 
     // create a lvgl display
@@ -231,7 +231,7 @@ void app_main(void)
 	/* Run the UI */
     // Lock the mutex due to the LVGL APIs are not thread-safe
     _lock_acquire(&lvgl_api_lock);
-    my_ui();
+    ui_init();
     _lock_release(&lvgl_api_lock);
     
     /*Create LVGL task*/
